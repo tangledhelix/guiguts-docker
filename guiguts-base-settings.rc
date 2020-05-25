@@ -1,0 +1,172 @@
+# This file contains your saved settings for guiguts.
+# It is automatically generated when you save your settings.
+# If you delete it, all the settings will revert to defaults.
+# You shouldn't ever have to edit this file manually.
+
+
+@gcopt = (0,0,0,0,0,0,1,0,1,);
+
+$alpha_sort               = 'f';
+$activecolor              = '#24baec';
+$auto_page_marks          = '1';
+$auto_show_images         = '0';
+$autobackup               = '0';
+$autosave                 = '0';
+$autosaveinterval         = '5';
+$bkgcolor                 = '#ffffff';
+$blocklmargin             = '1';
+$blockrmargin             = '72';
+$bold_char                = '=';
+$defaultindent            = '2';
+$donotcenterpagemarkers   = '0';
+$extops_size              = '10';
+$failedsearch             = '0';
+$font_char                = '=';
+$fontname                 = 'DPCustomMono2';
+$fontsize                 = '12';
+$fontweight               = '';
+$geometry                 = '1660x938+0+0';
+$gesperrt_char            = '~';
+$globalaspellmode         = 'normal';
+$highlightcolor           = '#a08dfc';
+$history_size             = '20';
+$hotkeybookmarks          = '0';
+$htmldiventry             = ' class="i2"';
+$htmlspanentry            = ' class="i2"';
+$ignoreversionnumber      = '';
+$intelligentWF            = '0';
+$ignoreversions           = 'revision';
+$italic_char              = '_';
+$jeebiesmode              = 'p';
+$lastversioncheck         = '1590375269';
+$lastversionrun           = '1.0.25';
+$lmargin                  = '0';
+$multisearchsize          = '3';
+$multiterm                = '0';
+$nobell                   = '0';
+$nohighlights             = '0';
+$projectfileslocation     = '';
+$notoolbar                = '0';
+$oldspellchecklayout      = '0';
+$poetrylmargin            = '4';
+$projectfileslocation     = '';
+$recentfile_size          = '9';
+$rewrapalgo               = '2';
+$rmargin                  = '72';
+$rmargindiff              = '1';
+$rwhyphenspace            = '1';
+$sc_char                  = '+';
+$scannos_highlighted      = '0';
+$spellcheckwithenchant    = '0';
+$stayontop                = '0';
+$toolside                 = 'bottom';
+$trackoperations          = '1';
+$txt_conv_bold            = '1';
+$txt_conv_font            = '0';
+$txt_conv_gesperrt        = '0';
+$txt_conv_italic          = '1';
+$txt_conv_sc              = '0';
+$txt_conv_tb              = '1';
+$twowordsinhyphencheck    = '0';
+$unicodemenusplit         = '2';
+$utffontname              = 'Courier New';
+$utffontsize              = '14';
+$url_no_proofer           = 'http://www.pgdp.net/phpBB2/privmsg.php?mode=post';
+$url_yes_proofer          = 'http://www.pgdp.net/c/stats/members/mbr_list.php?uname=';
+$urlprojectpage           = 'http://www.pgdp.net/c/project.php?id=';
+$urlprojectdiscussion     = 'http://www.pgdp.net/c/tools/proofers/project_topic.php?project=';
+$menulayout               = 'default';
+$verboseerrorchecks       = '0';
+$vislnnm                  = '0';
+$w3cremote                = '0';
+$wfstayontop              = '0';
+
+$globalspellpath     = '/usr/bin/aspell';
+$globalviewerpath    = '/usr/bin/geeqie -r';
+$globalbrowserstart  = 'xdg-open';
+$gutcommand          = '/usr/local/bin/bookloupe';
+$jeebiescommand      = '/usr/local/bin/jeebies';
+$scannospath         = '/dp/guiguts/scannos';
+$tidycommand         = '/usr/bin/tidy';
+$validatecsscommand  = '/dp/guiguts/tools/W3C/css-validator.jar';
+
+@recentfile = (
+	'README.md',
+);
+
+@extops = (
+	{'label' => 'View in browser', 'command' => 'xdg-open "$d$f$e"'},
+	{'label' => 'Open current file in Firefox', 'command' => 'firefox "$d$f$e"'},
+	{'label' => 'Websters 1913 (Specialist Online Dictionary)', 'command' => 'xdg-open http://www.specialist-online-dictionary.com/websters/headword_search.cgi?query=$t'},
+	{'label' => 'Websters 1828 American Dictionary', 'command' => 'xdg-open http://www.1828-dictionary.com/d/word/$t'},
+	{'label' => 'Onelook.com (several dictionaries)', 'command' => 'xdg-open http://www.onelook.com/?w=$t'},
+	{'label' => 'Shape Catcher (Unicode character finder)', 'command' => 'xdg-open http://shapecatcher.com/'},
+	{'label' => 'W3C Markup Validation Service', 'command' => 'xdg-open http://validator.w3.org/'},
+	{'label' => 'W3C CSS Validation Service', 'command' => 'xdg-open http://jigsaw.w3.org/css-validator/#validate_by_upload'},
+	{'label' => 'Open terminal', 'command' => 'bash -c "cd $d && xterm"'},
+	{'label' => '', 'command' => ''},
+	{'label' => '', 'command' => ''},
+);
+
+$geometryhash{alignpop}          = '+338+83';
+$geometryhash{gcviewoptspop}     = '+264+72';
+$geometryhash{oppop}             = '600x400+50+50';
+$geometryhash{linkpop}           = '+224+72';
+$geometryhash{utfsearchpop}      = '550x450+53+87';
+$geometryhash{regexrefpop}       = '+106+72';
+$geometryhash{hpopup}            = '300x400+584+211';
+$geometryhash{utfpop}            = '+46+46';
+$geometryhash{gcpop}             = '800x600+224+72';
+$geometryhash{footcheckpop}      = '+22+12';
+$geometryhash{pagesephelppop}    = '+191+132';
+$geometryhash{wfpop}             = '+365+63';
+$geometryhash{aboutpop}          = '+312+136';
+$geometryhash{gcrunoptspop}      = '+244+72';
+$geometryhash{pagelabelpop}      = '375x500+20+20';
+$geometryhash{jeepop}            = '+284+72';
+$geometryhash{asciiboxpop}       = '+358+187';
+$geometryhash{hotkeyspop}        = '+144+119';
+$geometryhash{extpop}            = '+120+38';
+$geometryhash{errorcheckpop}     = '+484+72';
+$geometryhash{prooferpop}        = '600x400+100+70';
+
+$positionhash{selectionpop}      = '+10+10';
+$positionhash{utfentrypop}       = '+191+132';
+$positionhash{markpop}           = '+140+93';
+$positionhash{pageseppop}        = '+334+176';
+$positionhash{hintpop}           = '+150+150';
+$positionhash{fixpop}            = '+34+22';
+$positionhash{srchhistsizepop}   = '+152+97';
+$positionhash{hilitepop}         = '+150+150';
+$positionhash{searchpop}         = '+10+10';
+$positionhash{pagemarkerpop}     = '+302+97';
+$positionhash{defurlspop}        = '+150+150';
+$positionhash{floodpop}          = '+150+150';
+$positionhash{brkpop}            = '+482+131';
+$positionhash{htmlgenpop}        = '+145+37';
+$positionhash{htmlimpop}         = '+45+37';
+$positionhash{footpop}           = '+255+157';
+$positionhash{marginspop}        = '+145+137';
+$positionhash{spellpopup}        = '+152+97';
+$positionhash{guesspgmarkerpop}  = '+10+10';
+$positionhash{stoppop}           = '+10+10';
+$positionhash{surpop}            = '+150+150';
+$positionhash{txtconvpop}        = '+82+131';
+$positionhash{tblfxpop}          = '+120+120';
+$positionhash{grpop}             = '+144+153';
+$positionhash{fontpop}           = '+10+10';
+$positionhash{filepathspop}      = '+55+7';
+$positionhash{latinpop}          = '+10+10';
+
+@mygcview = ();
+
+@search_history = (
+);
+
+@replace_history = (
+);
+
+@multidicts = (
+);
+
+1;
