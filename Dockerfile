@@ -1,3 +1,11 @@
+# TODO: epub maker
+# TODO: kindle maker
+# TODO: should guiguts/data/ be mounted from host?
+#       No label file found, creating file data/labels_en.rc with default values.
+# TODO: should the guiguts paths and stuff be set using env vars?
+#       the file is perl, right? So it can load env vars? Maybe?
+# TODO: a gimp container? bundle gimp in this container? (package name = gimp)
+
 # References
 # ----------
 # https://www.pgdp.net/wiki/PPTools/Guiguts/Install/Linux
@@ -11,6 +19,13 @@ FROM debian:10.4
 MAINTAINER Dan Lowe <dan@tangledhelix.com>
 
 ENV DEBIAN_FRONTEND=noninteractive
+
+COPY entrypoint.sh /entrypoint.sh
+
+# Default settings which includes path to bookloupe, DP custom font, and
+# other such base settings. But this is just defaults copied into place initially,
+# settings are persisted after that point.
+COPY guiguts-base-settings.rc /dp/guiguts-base-settings.rc
 
 RUN apt-get update \
  && apt-get install -y \
@@ -52,39 +67,24 @@ RUN apt-get update \
         liburi-perl \
         libwww-robotrules-perl \
  && apt-get clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN cpanm -n Tk::CursorControl
-RUN cpanm -n Tk::ToolBar
-RUN mkdir -p /dp/pp
-RUN git clone --depth 1 https://github.com/DistributedProofreaders/guiguts.git /dp/guiguts \
- && rm -rf /dp/guiguts/.git
-RUN cd /dp/guiguts/tools/jeebies \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+ && cpanm -n Tk::CursorControl \
+ && cpanm -n Tk::ToolBar \
+ && mkdir -p /dp/pp \
+ && git clone --depth 1 https://github.com/DistributedProofreaders/guiguts.git /dp/guiguts \
+ && rm -rf /dp/guiguts/.git \
+ && cd /dp/guiguts/tools/jeebies \
  && curl -L -o jeebies-dp.zip http://www.pgdp.org/~gm/jeebies/jeebies.zip \
  && unzip -o jeebies-dp.zip \
  && gcc jeebies.c -o jeebies \
- && rm -f jeebies-dp.zip
-RUN curl -L -o /bookloupe.tar.gz http://www.juiblex.co.uk/pgdp/bookloupe/bookloupe-2.0.tar.gz \
+ && rm -f jeebies-dp.zip \
+ && curl -L -o /bookloupe.tar.gz http://www.juiblex.co.uk/pgdp/bookloupe/bookloupe-2.0.tar.gz \
  && cd / && tar xfz bookloupe.tar.gz \
- && cd /bookloupe-2.0 && ./configure && make && make install && rm -rf bookloupe-2.0
-RUN mkdir -p /root/.fonts \
+ && cd /bookloupe-2.0 && ./configure && make && make install && rm -rf bookloupe-2.0 \
+ && mkdir -p /root/.fonts \
  && curl -L -o /root/.fonts/DPCustomMono2.ttf https://www.pgdp.net/c/faq/DPCustomMono2.ttf \
- && fc-cache -f -v
-
-COPY entrypoint.sh /entrypoint.sh
-RUN chmod 755 /entrypoint.sh
-
-# Default settings which includes path to bookloupe, DP custom font, and
-# other such base settings. But this is just defaults copied into place initially,
-# settings are persisted after that point.
-COPY guiguts-base-settings.rc /dp/guiguts-base-settings.rc
-
-# TODO: epub maker
-# TODO: kindle maker
-# TODO: should guiguts/data/ be mounted from host?
-#       No label file found, creating file data/labels_en.rc with default values.
-# TODO: should the guiguts paths and stuff be set using env vars?
-#       the file is perl, right? So it can load env vars? Maybe?
-# TODO: a gimp container? bundle gimp in this container? (package name = gimp)
+ && fc-cache -f -v \
+ && chmod 755 /entrypoint.sh
 
 ENTRYPOINT ["/entrypoint.sh"]
+
