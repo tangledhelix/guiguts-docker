@@ -29,7 +29,7 @@ fi
 
 xhost + 127.0.0.1
 
-echo "=> Starting container"
+echo "=> Starting guiguts container..."
 docker run --rm -d -e DISPLAY=host.docker.internal:0 \
     -v ${HOST_PP}:${CONTAINER_PP} \
     -v ${HOST_GGRC}:${CONTAINER_GGRC} \

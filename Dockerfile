@@ -24,7 +24,8 @@ COPY entrypoint.sh /entrypoint.sh
 
 # Default settings which includes path to bookloupe, DP custom font, and
 # other such base settings. But this is just defaults copied into place initially,
-# settings are persisted after that point.
+# your settings are persisted after that point. This is only here to make it
+# convenient to use the container-bundled aspell, bookloupe, jeebies, etc.
 COPY guiguts-base-settings.rc /dp/guiguts-base-settings.rc
 
 RUN apt-get update \
@@ -74,15 +75,15 @@ RUN apt-get update \
  && git clone --depth 1 https://github.com/DistributedProofreaders/guiguts.git /dp/guiguts \
  && rm -rf /dp/guiguts/.git \
  && cd /dp/guiguts/tools/jeebies \
- && curl -L -o jeebies-dp.zip http://www.pgdp.org/~gm/jeebies/jeebies.zip \
+ && curl -s -L -o jeebies-dp.zip http://www.pgdp.org/~gm/jeebies/jeebies.zip \
  && unzip -o jeebies-dp.zip \
  && gcc jeebies.c -o jeebies \
  && rm -f jeebies-dp.zip \
- && curl -L -o /bookloupe.tar.gz http://www.juiblex.co.uk/pgdp/bookloupe/bookloupe-2.0.tar.gz \
+ && curl -s -L -o /bookloupe.tar.gz http://www.juiblex.co.uk/pgdp/bookloupe/bookloupe-2.0.tar.gz \
  && cd / && tar xfz bookloupe.tar.gz \
  && cd /bookloupe-2.0 && ./configure && make && make install && rm -rf bookloupe-2.0 \
  && mkdir -p /root/.fonts \
- && curl -L -o /root/.fonts/DPCustomMono2.ttf https://www.pgdp.net/c/faq/DPCustomMono2.ttf \
+ && curl -s -L -o /root/.fonts/DPCustomMono2.ttf https://www.pgdp.net/c/faq/DPCustomMono2.ttf \
  && fc-cache -f -v \
  && chmod 755 /entrypoint.sh
 
