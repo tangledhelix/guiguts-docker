@@ -1,0 +1,14 @@
+---
+version: '2'
+services:
+  guiguts:
+    image: tangledhelix/guiguts:latest
+    build: ./guiguts
+    environment:
+      - DISPLAY=host.docker.internal:0
+    volumes:
+      - ~/dp/pp:/dp/pp
+      - guiguts:/dp/guiguts-persistent
+
+volumes:
+  guiguts:

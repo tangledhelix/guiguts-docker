@@ -2,8 +2,6 @@
 # TODO: kindle maker
 # TODO: should guiguts/data/ be mounted from host?
 #       No label file found, creating file data/labels_en.rc with default values.
-# TODO: should the guiguts paths and stuff be set using env vars?
-#       the file is perl, right? So it can load env vars? Maybe?
 # TODO: a gimp container? bundle gimp in this container? (package name = gimp)
 
 # References
@@ -20,14 +18,7 @@ MAINTAINER Dan Lowe <dan@tangledhelix.com>
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-COPY entrypoint.sh /entrypoint.sh
-
-# Default settings which includes path to bookloupe, DP custom font, and
-# other such base settings. But this is just defaults copied into place initially,
-# your settings are persisted after that point. This is only here to make it
-# convenient to use the container-bundled aspell, bookloupe, jeebies, etc.
-COPY guiguts-base-settings.rc /dp/guiguts-base-settings.rc
-
+# Install system packages
 RUN apt-get update \
  && apt-get install -y \
         make \
@@ -68,24 +59,47 @@ RUN apt-get update \
         liburi-perl \
         libwww-robotrules-perl \
  && apt-get clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
- && cpanm -n Tk::CursorControl \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# Install guiguts & its other requirements.
+# Use -n to not run cpanm tests (they'll fail without X11)
+RUN cpanm -n Tk::CursorControl \
  && cpanm -n Tk::ToolBar \
- && mkdir -p /dp/pp \
+ && rm -rf /root/.cpanm \
  && git clone --depth 1 https://github.com/DistributedProofreaders/guiguts.git /dp/guiguts \
- && rm -rf /dp/guiguts/.git \
- && cd /dp/guiguts/tools/jeebies \
+ && rm -rf /dp/guiguts/.git
+
+# Install Jeebies
+RUN cd /dp/guiguts/tools/jeebies \
  && curl -s -L -o jeebies-dp.zip http://www.pgdp.org/~gm/jeebies/jeebies.zip \
  && unzip -o jeebies-dp.zip \
  && gcc jeebies.c -o jeebies \
- && rm -f jeebies-dp.zip \
- && curl -s -L -o /bookloupe.tar.gz http://www.juiblex.co.uk/pgdp/bookloupe/bookloupe-2.0.tar.gz \
- && cd / && tar xfz bookloupe.tar.gz \
- && cd /bookloupe-2.0 && ./configure && make && make install && rm -rf bookloupe-2.0 \
- && mkdir -p /root/.fonts \
- && curl -s -L -o /root/.fonts/DPCustomMono2.ttf https://www.pgdp.net/c/faq/DPCustomMono2.ttf \
- && fc-cache -f -v \
- && chmod 755 /entrypoint.sh
+ && rm -f jeebies-dp.zip
 
-ENTRYPOINT ["/entrypoint.sh"]
+# Install Bookloupe
+RUN curl -s -L -o /bookloupe.tar.gz http://www.juiblex.co.uk/pgdp/bookloupe/bookloupe-2.0.tar.gz \
+ && cd / && tar xfz bookloupe.tar.gz \
+ && cd /bookloupe-2.0 && ./configure && make && make install && rm -rf bookloupe-2.0
+
+# Install DP's custom font
+RUN mkdir -p /root/.fonts \
+ && curl -s -L -o /root/.fonts/DPCustomMono2.ttf https://www.pgdp.net/c/faq/DPCustomMono2.ttf \
+ && fc-cache -f -v
+
+# Default settings which includes path to bookloupe, DP custom font, and
+# other such base settings. But this is just defaults copied into place initially,
+# your settings are persisted after that point. This is only here to make it
+# convenient to use the container-bundled aspell, bookloupe, jeebies, etc.
+COPY guiguts-base-settings.rc /dp/guiguts/default-settings.rc
+
+# Install persistent Guiguts settings links
+# These point to what we'll mount as a persistent volume
+RUN ln -s /dp/guiguts-persistent/setting.rc /dp/guiguts/setting.rc \
+ && ln -s /dp/guiguts-persistent/header.txt /dp/guiguts/header.txt
+
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+RUN chmod 755 /docker-entrypoint.sh
+
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
