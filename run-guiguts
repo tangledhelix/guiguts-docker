@@ -1,0 +1,63 @@
+#!/bin/bash
+
+# Docker image to use
+IMAGE="tangledhelix/guiguts:latest"
+
+# Location of your DP setup on this Mac
+BASE="${HOME}/dp"
+
+# Location or your DP projects on this Mac
+HOST_PP="${BASE}/pp"
+
+# End of configuration
+# ----------------------------------------------------------------------
+
+cd $(dirname $0)
+
+# Guiguts directory
+GG_BASE="${BASE}/guiguts"
+
+# Guiguts settings
+HOST_GGRC="${GG_BASE}/setting.rc"
+CONTAINER_GGRC="/dp/guiguts/setting.rc"
+
+# Guiguts header
+HOST_HEADER="${GG_BASE}/header.txt"
+CONTAINER_HEADER="/dp/guiguts/header.txt"
+
+# Projects directory
+CONTAINER_PP="/dp/pp"
+
+# Create a base directory for guiguts if it doesn't exist
+if [ ! -d $GG_BASE ]; then
+    mkdir -p $GG_BASE
+fi
+
+# uh oh... bad news
+if [ -d $HOST_GGRC -o -d $HOST_HEADER ]; then
+    echo "!!! Warning, dir found where file expected in $GG_BASE/"
+    exit 1
+fi
+
+# Create an empty config file if one doesn't exist
+if [ ! -f $HOST_GGRC ]; then
+    touch $HOST_GGRC
+fi
+
+# Create an empty header file if one doesn't exist
+if [ ! -f $HOST_HEADER ]; then
+    touch $HOST_HEADER
+fi
+
+xhost + 127.0.0.1 || exit 1
+
+docker pull $IMAGE
+
+docker run --rm -d -e DISPLAY=host.docker.internal:0 \
+    -v ${HOST_PP}:${CONTAINER_PP} \
+    -v ${HOST_GGRC}:${CONTAINER_GGRC} \
+    -v ${HOST_HEADER}:${CONTAINER_HEADER} \
+    ${IMAGE} || exit 1
+
+exit 0
+
