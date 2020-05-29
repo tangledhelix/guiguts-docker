@@ -92,13 +92,7 @@ RUN mkdir -p /root/.fonts \
 # convenient to use the container-bundled aspell, bookloupe, jeebies, etc.
 COPY guiguts-base-settings.rc /dp/guiguts/default-settings.rc
 
-# Install persistent Guiguts settings links
-# These point to what we'll mount as a persistent volume
-RUN ln -s /dp/guiguts-persistent/setting.rc /dp/guiguts/setting.rc \
- && ln -s /dp/guiguts-persistent/header.txt /dp/guiguts/header.txt
-
 COPY docker-entrypoint.sh /docker-entrypoint.sh
-
 RUN chmod 755 /docker-entrypoint.sh
 
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
