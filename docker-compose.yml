@@ -3,7 +3,7 @@ version: '2'
 services:
   guiguts:
     image: tangledhelix/guiguts:latest
-    build: ./guiguts
+    build: .
     environment:
       - DISPLAY=host.docker.internal:0
     volumes:
