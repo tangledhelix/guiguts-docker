@@ -16,11 +16,11 @@ This is necessary because Docker will connect to the X11 server using the localh
 
 By default, this Docker setup assumes you will use `~/dp/pp/` on your Mac to store your DP projects. If that's not the case, you can change the path in `docker-compose.yml`.
 
-Create a directory `~/dp/guiguts` and touch `header.txt` and `setting.rc` within it.
+Create a directory `~/.guiguts` and touch `header.txt` and `setting.rc` within it.
 
 ```
-mkdir -p ~/dp/guiguts
-touch ~/dp/guiguts/setting.rc ~/dp/guiguts/header.txt
+mkdir -p ~/.guiguts
+touch ~/.guiguts/setting.rc ~/.guiguts/header.txt
 ```
 
 If you don't like that path, use another, but adjust the paths in `docker-compose.yml` to match.
