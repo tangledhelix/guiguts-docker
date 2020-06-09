@@ -39,6 +39,8 @@ Easy:
 docker-compose up -d
 ```
 
+The container will handle everything from there. When you quit guiguts, the container will stop running.
+
 ## Guiguts configuration
 
 Docker will store the Guiguts config file (setting.rc) and the HTML header (header.txt) on your Mac's filesystem, not within Docker. They should be saved between runs, even though the Docker containers themselves are ephemeral.
