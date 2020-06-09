@@ -47,6 +47,8 @@ Docker will store the Guiguts config file (setting.rc) and the HTML header (head
 
 Just update settings in the Guiguts preferences like you normally would, and they should be saved properly.
 
+If you want to see the config, it should be in your home directory under `~/.guiguts`.
+
 ## Included tools
 
 - Guiguts
@@ -63,3 +65,6 @@ If you want to run a shell inside the container to poke around, you can either u
 docker-compose exec guiguts bash
 ```
 
+## Future plans
+
+At some point I plan on adding an ebookmaker container. Or possibly bundling ebookmaker into this setup and adding it as a default option in guiguts' `Custom` menu.
