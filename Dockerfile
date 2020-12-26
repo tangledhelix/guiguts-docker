@@ -16,9 +16,11 @@
 FROM debian:10.4
 MAINTAINER Dan Lowe <dan@tangledhelix.com>
 
-ENV DEBIAN_FRONTEND=noninteractive
+# What to check out (probably a tag) from guiguts repository
+ENV GUIGUTS_RELEASE_TAG=r1.1.1
 
 # Install system packages
+ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -y \
         make \
@@ -66,8 +68,8 @@ RUN apt-get update \
 RUN cpanm -n Tk::CursorControl \
  && cpanm -n Tk::ToolBar \
  && rm -rf /root/.cpanm \
- && git clone --depth 1 https://github.com/DistributedProofreaders/guiguts.git /dp/guiguts \
- && rm -rf /dp/guiguts/.git
+ && git clone https://github.com/DistributedProofreaders/guiguts.git /dp/guiguts \
+ && cd /dp/guiguts && git checkout ${GUIGUTS_RELEASE_TAG} && rm -rf .git
 
 # Install Jeebies
 RUN cd /dp/guiguts/tools/jeebies \
