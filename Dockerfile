@@ -92,10 +92,11 @@ RUN mkdir -p /root/.fonts \
 # other such base settings. But this is just defaults copied into place initially,
 # your settings are persisted after that point. This is only here to make it
 # convenient to use the container-bundled aspell, bookloupe, jeebies, etc.
-COPY guiguts-base-settings.rc /dp/guiguts/default-settings.rc
+COPY guiguts-base-settings.rc /dp/guiguts/src/default-settings.rc
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod 755 /docker-entrypoint.sh
 
+WORKDIR /dp/guiguts/src
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
