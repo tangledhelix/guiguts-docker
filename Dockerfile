@@ -16,8 +16,9 @@
 FROM debian:10.4
 MAINTAINER Dan Lowe <dan@tangledhelix.com>
 
-# What to check out (probably a tag) from guiguts repository
-ENV GUIGUTS_RELEASE_TAG=r1.1.1
+### Set GUIGUTS_RELEASE_TAG when upgrading to a new guiguts.
+###   (see below)
+### Also update docker-compose.yml
 
 # Install system packages
 ARG DEBIAN_FRONTEND=noninteractive
@@ -42,6 +43,7 @@ RUN apt-get update \
         liburi-perl \
         libencode-locale-perl \
         libfile-listing-perl \
+        libfile-which-perl \
         libhtml-parser-perl \
         libhtml-tagset-perl \
         libhttp-cookies-perl \
@@ -52,6 +54,7 @@ RUN apt-get update \
         libio-html-perl \
         libimage-size-perl \
         libwww-perl \
+        libwebservice-validator-html-w3c-perl \
         liblwp-mediatypes-perl \
         libmodule-build-perl \
         libnet-http-perl \
@@ -62,6 +65,9 @@ RUN apt-get update \
         libwww-robotrules-perl \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+# What to check out (probably a tag) from guiguts repository
+ENV GUIGUTS_RELEASE_TAG=r1.2.1
 
 # Install guiguts & its other requirements.
 # Use -n to not run cpanm tests (they'll fail without X11)
