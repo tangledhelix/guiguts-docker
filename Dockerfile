@@ -67,7 +67,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # What to check out (probably a tag) from guiguts repository
-ENV GUIGUTS_RELEASE_TAG=r1.2.1
+ENV GUIGUTS_RELEASE_TAG=r1.2.2
 
 # Install guiguts & its other requirements.
 # Use -n to not run cpanm tests (they'll fail without X11)
