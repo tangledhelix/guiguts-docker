@@ -98,9 +98,6 @@ RUN mkdir -p /root/.fonts \
 # other such base settings.
 COPY guiguts-base-settings.rc /dp/guiguts/src/default-settings.rc
 
-# HTML header file
-COPY guiguts-header.txt /dp/guiguts/src/header.txt
-
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod 755 /docker-entrypoint.sh
 
