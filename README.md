@@ -16,15 +16,6 @@ This is necessary because Docker will connect to the X11 server using the localh
 
 By default, this Docker setup assumes you will use `~/dp/pp/` on your Mac to store your DP projects. If that's not the case, you can change the path in `docker-compose.yml`.
 
-Create a directory `~/.guiguts` and touch `header.txt` and `setting.rc` within it.
-
-```
-mkdir -p ~/.guiguts
-touch ~/.guiguts/setting.rc ~/.guiguts/header.txt
-```
-
-If you don't like that path, use another, but adjust the paths in `docker-compose.yml` to match.
-
 Lastly, allow connections to X11 from locahost. You might want to put this into your `.bash_profile`.
 
 ```
@@ -40,14 +31,6 @@ docker-compose up -d
 ```
 
 The container will handle everything from there. When you quit guiguts, the container will stop running.
-
-## Guiguts configuration
-
-Docker will store the Guiguts config file (setting.rc) and the HTML header (header.txt) on your Mac's filesystem, not within Docker. They should be saved between runs, even though the Docker containers themselves are ephemeral.
-
-Just update settings in the Guiguts preferences like you normally would, and they should be saved properly.
-
-If you want to see the config, it should be in your home directory under `~/.guiguts`.
 
 ## Included tools
 
