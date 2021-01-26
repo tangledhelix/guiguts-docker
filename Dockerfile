@@ -1,11 +1,11 @@
-# TODO: epub maker
-# TODO: kindle maker
-# TODO: should guiguts/data/ be mounted from host?
-#       No label file found, creating file data/labels_en.rc with default values.
-# TODO: a gimp container? bundle gimp in this container? (package name = gimp)
+# Guiguts requirements:
+# https://github.com/DistributedProofreaders/guiguts/blob/master/INSTALL.md
 
-# References
-# ----------
+# Ebookmaker requirements:
+# https://github.com/DistributedProofreaders/guiguts/blob/master/tools/ebookmaker/README.md
+
+# References:
+#
 # https://www.pgdp.net/wiki/PPTools/Guiguts/Install/Linux
 # https://github.com/DistributedProofreaders/guiguts
 # http://gutcheck.sourceforge.net/etc.html
@@ -13,94 +13,106 @@
 # https://wiki.ubuntu.com/Fonts
 # https://stackoverflow.com/a/42260979/2449905
 
-FROM debian:10.4
-MAINTAINER Dan Lowe <dan@tangledhelix.com>
+FROM debian:buster
+LABEL maintainer="dan@tangledhelix.com"
 
-### Set GUIGUTS_RELEASE_TAG when upgrading to a new guiguts.
+### Set GUIGUTS_RELEASE_VERSION when upgrading to a new guiguts.
 ###   (see below)
-### Also update docker-compose.yml
+### Also update docker-compose.yml (image version) before rebuilding
 
 # Install system packages
 ARG DEBIAN_FRONTEND=noninteractive
 RUN apt-get update \
  && apt-get install -y \
-        make \
-        gcc \
-        zip \
-        git \
-        dos2unix \
-        cpanminus \
-        curl \
-        pkg-config \
-        libglib2.0 \
-        geeqie \
-        aspell \
-        aspell-en \
-        tidy \
-        xterm \
-        libmime-base64-urlsafe-perl \
-        libdigest-md5-file-perl \
-        liburi-perl \
-        libencode-locale-perl \
-        libfile-listing-perl \
-        libfile-which-perl \
-        libhtml-parser-perl \
-        libhtml-tagset-perl \
-        libhttp-cookies-perl \
-        libhttp-daemon-perl \
-        libhttp-date-perl \
-        libhttp-message-perl \
-        libhttp-negotiate-perl \
-        libio-html-perl \
-        libimage-size-perl \
-        libwww-perl \
-        libwebservice-validator-html-w3c-perl \
-        liblwp-mediatypes-perl \
-        libmodule-build-perl \
-        libnet-http-perl \
-        perltidy \
-        libtext-levenshteinxs-perl \
-        perl-tk \
-        liburi-perl \
-        libwww-robotrules-perl \
+      libtext-levenshteinxs-perl \
+      libfile-which-perl \
+      libimage-size-perl \
+      libwww-perl \
+      libwebservice-validator-html-w3c-perl \
+      libxml-xpath-perl \
+      perl-tk \
+      aspell \
+      aspell-en \
+      tidy \
+      opensp \
+      default-jre \
+      geeqie \
+      xterm \
+      cpanminus \
+      make \
+      curl \
+      zip \
+      gcc \
+      pkg-config \
+      libglib2.0 \
+      dos2unix \
+      python3 \
+      python3-pip \
+      python3-cairo \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-# What to check out (probably a tag) from guiguts repository
-ENV GUIGUTS_RELEASE_TAG=r1.2.3
+# Ebookmaker install
+RUN pip3 install ebookmaker
 
-# Install guiguts & its other requirements.
-# Use -n to not run cpanm tests (they'll fail without X11)
+# Install guiguts requirements.
+# Use -n to not run cpanm tests (they'll fail without X11 server)
 RUN cpanm -n Tk::CursorControl \
  && cpanm -n Tk::ToolBar \
- && rm -rf /root/.cpanm \
- && git clone https://github.com/DistributedProofreaders/guiguts.git /dp/guiguts \
- && cd /dp/guiguts && git checkout ${GUIGUTS_RELEASE_TAG} && rm -rf .git
-
-# Install Jeebies
-RUN cd /dp/guiguts/tools/jeebies \
- && curl -s -L -o jeebies-dp.zip http://www.pgdp.org/~gm/jeebies/jeebies.zip \
- && unzip -o jeebies-dp.zip \
- && gcc jeebies.c -o jeebies \
- && rm -f jeebies-dp.zip
+ && rm -rf /root/.cpanm
 
 # Install Bookloupe
 RUN curl -s -L -o /bookloupe.tar.gz http://www.juiblex.co.uk/pgdp/bookloupe/bookloupe-2.0.tar.gz \
- && cd / && tar xfz bookloupe.tar.gz \
- && cd /bookloupe-2.0 && ./configure && make && make install && rm -rf bookloupe-2.0
+ && cd / \
+ && tar xfz bookloupe.tar.gz \
+ && cd /bookloupe-2.0 \
+ && ./configure && make && make install && rm -rf bookloupe-2.0
 
 # Install DP's custom font
 RUN mkdir -p /root/.fonts \
- && curl -s -L -o /root/.fonts/DPCustomMono2.ttf https://www.pgdp.net/c/faq/DPCustomMono2.ttf \
+ && curl -s -L -o /root/.fonts/DPSansMono2.ttf https://github.com/DistributedProofreaders/dproofreaders/raw/master/styles/fonts/DPSansMono.ttf \
  && fc-cache -f -v
+
+# Guiguts release to fetch from Github
+ENV GUIGUTS_RELEASE_VERSION=1.2.3
+
+# Install Guiguts
+RUN curl -s -L -o /guiguts.zip \
+    https://github.com/DistributedProofreaders/guiguts/releases/download/r${GUIGUTS_RELEASE_VERSION}/guiguts-generic-${GUIGUTS_RELEASE_VERSION}.zip \
+ && mkdir -p /dp \
+ && cd /dp \
+ && unzip /guiguts.zip \
+ && rm -f /guiguts.zip
+
+# Install Jeebies
+RUN cd /dp/guiguts/tools/jeebies \
+ && make build
 
 # Default settings which includes path to bookloupe, DP custom font, and
 # other such base settings.
-COPY guiguts-base-settings.rc /dp/guiguts/src/default-settings.rc
+COPY guiguts-base-settings.rc /dp/guiguts/default-settings.rc
 
 COPY docker-entrypoint.sh /docker-entrypoint.sh
 RUN chmod 755 /docker-entrypoint.sh
 
-WORKDIR /dp/guiguts/src
+WORKDIR /dp/guiguts
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
 
+# java for css validator = /usr/bin/java
+# open-sp for xhtml validator = /usr/bin/{onsgmls,osgmlnorm,ospam,ospcat,ospent,osx}
+
+# There is no version of Kindle Previewer for Linux. You can get one
+# for macOS. Unclear how to get a Kindle-format book that works with it,
+# maybe ebookmaker will do that?
+# https://www.amazon.com/gp/feature.html?docId=1000765261
+
+# for ebookmaker:
+# [ ] install cairo
+#       libcairo2 ?
+#       libcairo2-dev ?
+#       python3-cairo ?
+#       python3-cairo-dev ?
+# [x] pip3 install ebookmaker
+#       this installed cairocffi, did it take care of this itself?
+
+# TODO: a gimp container? bundle gimp in this container? (package name = gimp)

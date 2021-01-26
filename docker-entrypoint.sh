@@ -1,6 +1,6 @@
 #!/bin/sh
 
-BASE="/dp/guiguts/src"
+BASE="/dp/guiguts"
 
 # If the settings file exists, but has zero size, then copy the default
 # settings to it. We mount the settings file into the container so it can
@@ -30,5 +30,5 @@ fi
 
 # Run Guiguts
 
-exec perl /dp/guiguts/src/guiguts.pl
+exec perl $BASE/guiguts.pl
 

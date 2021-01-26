@@ -22,7 +22,7 @@ $donotcenterpagemarkers   = '0';
 $extops_size              = '10';
 $failedsearch             = '0';
 $font_char                = '=';
-$fontname                 = 'DPCustomMono2';
+$fontname                 = 'DPSansMono2';
 $fontsize                 = '12';
 $fontweight               = '';
 $geometry                 = '1660x938+0+0';
