@@ -81,31 +81,29 @@ $vislnnm                  = '0';
 $w3cremote                = '0';
 $wfstayontop              = '0';
 
+$globallastpath      = '/dp/pp';
 $globalspellpath     = '/usr/bin/aspell';
 $globalviewerpath    = '/usr/bin/geeqie -r';
-$globalbrowserstart  = 'xdg-open';
+$globalbrowserstart  = 'firefox';
 $gutcommand          = '/usr/local/bin/bookloupe';
 $jeebiescommand      = '/dp/guiguts/tools/jeebies/jeebies';
 $scannospath         = '/dp/guiguts/scannos';
 $tidycommand         = '/usr/bin/tidy';
-$validatecsscommand  = '/dp/guiguts/tools/W3C/css-validator.jar';
+$ebookmakercommand   = '/usr/local/bin/ebookmaker';
 
-@recentfile = (
-	'README.md',
-);
+@recentfile = ();
 
 @extops = (
-	{'label' => 'View in browser', 'command' => 'xdg-open "$d$f$e"'},
-	{'label' => 'Open current file in Firefox', 'command' => 'firefox "$d$f$e"'},
-	{'label' => 'Websters 1913 (Specialist Online Dictionary)', 'command' => 'xdg-open http://www.specialist-online-dictionary.com/websters/headword_search.cgi?query=$t'},
-	{'label' => 'Websters 1828 American Dictionary', 'command' => 'xdg-open http://www.1828-dictionary.com/d/word/$t'},
-	{'label' => 'Onelook.com (several dictionaries)', 'command' => 'xdg-open http://www.onelook.com/?w=$t'},
-	{'label' => 'Shape Catcher (Unicode character finder)', 'command' => 'xdg-open http://shapecatcher.com/'},
-	{'label' => 'W3C Markup Validation Service', 'command' => 'xdg-open http://validator.w3.org/'},
-	{'label' => 'W3C CSS Validation Service', 'command' => 'xdg-open http://jigsaw.w3.org/css-validator/#validate_by_upload'},
+	{'label' => 'View in browser', 'command' => 'firefox "$d$f$e"'},
+	{'label' => 'Websters 1913 (Specialist Online Dictionary)', 'command' => 'firefox http://www.specialist-online-dictionary.com/websters/headword_search.cgi?query=$t'},
+	{'label' => 'Websters 1828 American Dictionary', 'command' => 'firefox http://webstersdictionary1828.com/Dictionary/$t'},
+	{'label' => 'Onelook.com (several dictionaries)', 'command' => 'firefox http://www.onelook.com/?w=$t'},
+	{'label' => 'Shape Catcher (Unicode character finder)', 'command' => 'firefox http://shapecatcher.com/'},
+	{'label' => 'W3C Markup Validation Service', 'command' => 'firefox http://validator.w3.org/'},
+	{'label' => 'W3C CSS Validation Service', 'command' => 'firefox http://jigsaw.w3.org/css-validator/#validate_by_upload'},
+	{'label' => 'PPTools', 'command' => 'firefox https://pptools.tangledhelix.com'},
+	{'label' => 'Google Books Ngram Viewer', 'command' => 'firefox https://books.google.com/ngrams/graph?content=$t'},
 	{'label' => 'Open terminal', 'command' => 'bash -c "cd $d && xterm"'},
-	{'label' => '', 'command' => ''},
-	{'label' => '', 'command' => ''},
 );
 
 $geometryhash{alignpop}          = '+338+83';

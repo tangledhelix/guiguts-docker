@@ -8,7 +8,7 @@ BASE="/dp/guiguts"
 # the file is currently empty.
 
 SETTING_FILE="$BASE/setting.rc"
-DEFAULT_SETTINGS="$BASE/default-settings.rc"
+DEFAULT_SETTINGS="/guiguts-base-settings.rc"
 
 if [ -f $SETTING_FILE -a ! -s $SETTING_FILE ]; then
     echo "Empty setting.rc file found - installing default contents"

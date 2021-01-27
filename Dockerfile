@@ -13,16 +13,22 @@
 # https://wiki.ubuntu.com/Fonts
 # https://stackoverflow.com/a/42260979/2449905
 
-FROM debian:buster
+FROM debian:buster-slim
 LABEL maintainer="dan@tangledhelix.com"
 
+### ------------------------------------------------------------------
 ### Set GUIGUTS_RELEASE_VERSION when upgrading to a new guiguts.
 ###   (see below)
 ### Also update docker-compose.yml (image version) before rebuilding
+### ------------------------------------------------------------------
 
-# Install system packages
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+
+# Note: Use `cpanm -n` to not run tests (they fail without an X11 server)
+
 ARG DEBIAN_FRONTEND=noninteractive
-RUN apt-get update \
+RUN chmod 755 /docker-entrypoint.sh \
+ && apt-get update \
  && apt-get install -y \
       libtext-levenshteinxs-perl \
       libfile-which-perl \
@@ -34,8 +40,6 @@ RUN apt-get update \
       aspell \
       aspell-en \
       tidy \
-      opensp \
-      default-jre \
       geeqie \
       xterm \
       cpanminus \
@@ -49,57 +53,48 @@ RUN apt-get update \
       python3 \
       python3-pip \
       python3-cairo \
+      firefox-esr \
  && apt-get clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-# Ebookmaker install
-RUN pip3 install ebookmaker
-
-# Install guiguts requirements.
-# Use -n to not run cpanm tests (they'll fail without X11 server)
-RUN cpanm -n Tk::CursorControl \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
+ && pip3 install ebookmaker \
+ && cpanm -n Tk::CursorControl \
  && cpanm -n Tk::ToolBar \
- && rm -rf /root/.cpanm
-
-# Install Bookloupe
-RUN curl -s -L -o /bookloupe.tar.gz http://www.juiblex.co.uk/pgdp/bookloupe/bookloupe-2.0.tar.gz \
+ && rm -rf /root/.cpanm \
+ && curl -s -L -o /bookloupe.tar.gz \
+      http://www.juiblex.co.uk/pgdp/bookloupe/bookloupe-2.0.tar.gz \
  && cd / \
  && tar xfz bookloupe.tar.gz \
  && cd /bookloupe-2.0 \
- && ./configure && make && make install && rm -rf bookloupe-2.0
-
-# Install DP's custom font
-RUN mkdir -p /root/.fonts \
- && curl -s -L -o /root/.fonts/DPSansMono2.ttf https://github.com/DistributedProofreaders/dproofreaders/raw/master/styles/fonts/DPSansMono.ttf \
- && fc-cache -f -v
-
-# Guiguts release to fetch from Github
-ENV GUIGUTS_RELEASE_VERSION=1.2.3
-
-# Install Guiguts
-RUN curl -s -L -o /guiguts.zip \
-    https://github.com/DistributedProofreaders/guiguts/releases/download/r${GUIGUTS_RELEASE_VERSION}/guiguts-generic-${GUIGUTS_RELEASE_VERSION}.zip \
- && mkdir -p /dp \
- && cd /dp \
- && unzip /guiguts.zip \
- && rm -f /guiguts.zip
-
-# Install Jeebies
-RUN cd /dp/guiguts/tools/jeebies \
- && make build
+ && ./configure \
+ && make \
+ && make install \
+ && cd / \
+ && rm -rf bookloupe-2.0 bookloupe.tar.gz \
+ && groupadd pgdp \
+ && useradd -g pgdp -d /dp -m pgdp
 
 # Default settings which includes path to bookloupe, DP custom font, and
 # other such base settings.
-COPY guiguts-base-settings.rc /dp/guiguts/default-settings.rc
+COPY guiguts-base-settings.rc /guiguts-base-settings.rc
 
-COPY docker-entrypoint.sh /docker-entrypoint.sh
-RUN chmod 755 /docker-entrypoint.sh
+# Guiguts release to install (must exist as a GitHub release)
+ENV GUIGUTS_RELEASE_VERSION=1.2.3
 
-WORKDIR /dp/guiguts
+USER pgdp
+WORKDIR /dp
+
+RUN mkdir -p .fonts \
+ && curl -s -L -o .fonts/DPSansMono2.ttf \
+      https://github.com/DistributedProofreaders/dproofreaders/raw/master/styles/fonts/DPSansMono.ttf \
+ && fc-cache -f -v \
+ && curl -s -L -o guiguts.zip \
+    https://github.com/DistributedProofreaders/guiguts/releases/download/r${GUIGUTS_RELEASE_VERSION}/guiguts-generic-${GUIGUTS_RELEASE_VERSION}.zip \
+ && unzip guiguts.zip \
+ && rm -f guiguts.zip \
+ && cd guiguts/tools/jeebies \
+ && make build
+
 ENTRYPOINT [ "/docker-entrypoint.sh" ]
-
-# java for css validator = /usr/bin/java
-# open-sp for xhtml validator = /usr/bin/{onsgmls,osgmlnorm,ospam,ospcat,ospent,osx}
 
 # There is no version of Kindle Previewer for Linux. You can get one
 # for macOS. Unclear how to get a Kindle-format book that works with it,
@@ -115,4 +110,3 @@ ENTRYPOINT [ "/docker-entrypoint.sh" ]
 # [x] pip3 install ebookmaker
 #       this installed cairocffi, did it take care of this itself?
 
-# TODO: a gimp container? bundle gimp in this container? (package name = gimp)
