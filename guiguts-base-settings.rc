@@ -95,15 +95,15 @@ $ebookmakercommand   = '/usr/local/bin/ebookmaker';
 
 @extops = (
 	{'label' => 'View in browser', 'command' => 'firefox "$d$f$e"'},
-	{'label' => 'Websters 1913 (Specialist Online Dictionary)', 'command' => 'firefox http://www.specialist-online-dictionary.com/websters/headword_search.cgi?query=$t'},
-	{'label' => 'Websters 1828 American Dictionary', 'command' => 'firefox http://webstersdictionary1828.com/Dictionary/$t'},
 	{'label' => 'Onelook.com (several dictionaries)', 'command' => 'firefox http://www.onelook.com/?w=$t'},
-	{'label' => 'Shape Catcher (Unicode character finder)', 'command' => 'firefox http://shapecatcher.com/'},
-	{'label' => 'W3C Markup Validation Service', 'command' => 'firefox http://validator.w3.org/'},
-	{'label' => 'W3C CSS Validation Service', 'command' => 'firefox http://jigsaw.w3.org/css-validator/#validate_by_upload'},
-	{'label' => 'PPTools', 'command' => 'firefox https://pptools.tangledhelix.com'},
+	{'label' => 'Websters 1828 American Dictionary', 'command' => 'firefox http://webstersdictionary1828.com/Dictionary/$t'},
 	{'label' => 'Google Books Ngram Viewer', 'command' => 'firefox https://books.google.com/ngrams/graph?content=$t'},
-	{'label' => 'Open terminal', 'command' => 'bash -c "cd $d && xterm"'},
+	{'label' => 'Shape Catcher (Unicode character finder)', 'command' => 'firefox http://shapecatcher.com/'},
+	{'label' => 'W3C HTML Validation Service', 'command' => 'firefox https://validator.w3.org/#validate_by_upload+with_options'},
+	{'label' => 'W3C CSS Validation Service', 'command' => 'firefox https://jigsaw.w3.org/css-validator/#validate_by_upload+with_options'},
+	{'label' => 'EBookMaker Online', 'command' => 'firefox https://ebookmaker.pglaf.org/'},
+	{'label' => 'Post-Processing Workbench', 'command' => 'firefox https://www.pgdp.net/ppwb/'},
+	{'label' => 'PPTools', 'command' => 'firefox https://pptools.tangledhelix.com'},
 );
 
 $geometryhash{alignpop}          = '+338+83';

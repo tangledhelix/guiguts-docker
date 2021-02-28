@@ -78,7 +78,7 @@ RUN chmod 755 /docker-entrypoint.sh \
 COPY guiguts-base-settings.rc /guiguts-base-settings.rc
 
 # Guiguts release to install (must exist as a GitHub release)
-ENV GUIGUTS_RELEASE_VERSION=1.2.3
+ENV GUIGUTS_RELEASE_VERSION=1.2.4
 
 USER pgdp
 WORKDIR /dp
