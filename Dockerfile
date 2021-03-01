@@ -36,6 +36,9 @@ RUN chmod 755 /docker-entrypoint.sh \
       libwww-perl \
       libwebservice-validator-html-w3c-perl \
       libxml-xpath-perl \
+      libxml2-dev \
+      libxslt-dev \
+      libjpeg-dev \
       perl-tk \
       aspell \
       aspell-en \
@@ -48,6 +51,7 @@ RUN chmod 755 /docker-entrypoint.sh \
       zip \
       gcc \
       pkg-config \
+      automake \
       libglib2.0 \
       dos2unix \
       python3 \
@@ -55,22 +59,28 @@ RUN chmod 755 /docker-entrypoint.sh \
       python3-cairo \
       firefox-esr \
  && apt-get clean \
- && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
- && pip3 install ebookmaker \
- && cpanm -n Tk::CursorControl \
+ && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+RUN pip3 install ebookmaker
+
+RUN cpanm -n Tk::CursorControl \
  && cpanm -n Tk::ToolBar \
- && rm -rf /root/.cpanm \
- && curl -s -L -o /bookloupe.tar.gz \
+ && rm -rf /root/.cpanm
+
+RUN curl -s -L -o /bookloupe.tar.gz \
       http://www.juiblex.co.uk/pgdp/bookloupe/bookloupe-2.0.tar.gz \
  && cd / \
  && tar xfz bookloupe.tar.gz \
  && cd /bookloupe-2.0 \
+ && cp /usr/share/automake-1.16/config.guess config/ \
+ && cp /usr/share/automake-1.16/config.sub config/ \
  && ./configure \
  && make \
  && make install \
  && cd / \
- && rm -rf bookloupe-2.0 bookloupe.tar.gz \
- && groupadd pgdp \
+ && rm -rf bookloupe-2.0 bookloupe.tar.gz
+
+RUN groupadd pgdp \
  && useradd -g pgdp -d /dp -m pgdp
 
 # Default settings which includes path to bookloupe, DP custom font, and
@@ -86,8 +96,9 @@ WORKDIR /dp
 RUN mkdir -p .fonts \
  && curl -s -L -o .fonts/DPSansMono2.ttf \
       https://github.com/DistributedProofreaders/dproofreaders/raw/master/styles/fonts/DPSansMono.ttf \
- && fc-cache -f -v \
- && curl -s -L -o guiguts.zip \
+ && fc-cache -f -v
+
+RUN curl -s -L -o guiguts.zip \
     https://github.com/DistributedProofreaders/guiguts/releases/download/r${GUIGUTS_RELEASE_VERSION}/guiguts-generic-${GUIGUTS_RELEASE_VERSION}.zip \
  && unzip guiguts.zip \
  && rm -f guiguts.zip \
