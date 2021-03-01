@@ -4,9 +4,13 @@ services:
   guiguts:
     image: tangledhelix/guiguts:1.2.4-1
     build: .
+    network_mode: host
     environment:
-      - DISPLAY=host.docker.internal:0
+      - DISPLAY=${X11_IP_ADDR}:0
+      - XAUTHORITY=/.Xauthority
     volumes:
+      - /tmp/.X11-unix:/tmp/.X11-unix
+      - ~/.Xauthority:/.Xauthority
       - ~/dp/pp:/dp/pp
       - ~/.guiguts/header.txt:/dp/guiguts/header.txt
       - ~/.guiguts/setting.rc:/dp/guiguts/setting.rc

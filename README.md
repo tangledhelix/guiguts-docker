@@ -35,20 +35,13 @@ touch ~/.guiguts/setting.rc ~/.guiguts/header.txt
 (If you don't like that path, use another, but adjust the paths in
 `docker-compose.yml` to match.)
 
-Lastly, allow connections to X11 from locahost. You might want to put this into
-your `.bash_profile`.
-
-```
-xhost +127.0.0.1
-```
-
 ## Running guiguts
 
 Easy:
 
 ```
 cd {wherever docker-compose.yml is}
-docker-compose up -d
+./start_guiguts.sh
 ```
 
 The container will handle everything from there. When you quit Guiguts, the
