@@ -89,7 +89,7 @@ $gutcommand          = '/usr/local/bin/bookloupe';
 $jeebiescommand      = '/dp/guiguts/tools/jeebies/jeebies';
 $scannospath         = '/dp/guiguts/scannos';
 $tidycommand         = '/usr/bin/tidy';
-$ebookmakercommand   = '/usr/local/bin/ebookmaker';
+$ebookmakercommand   = '/root/.local/bin/ebookmaker';
 
 @recentfile = ();
 

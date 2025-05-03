@@ -8,5 +8,5 @@ if [ $? -ne 0 ]; then
     sleep 5
 fi
 
-docker-compose up
-docker-compose down
+docker compose up
+docker compose down

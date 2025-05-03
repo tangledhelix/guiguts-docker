@@ -13,7 +13,7 @@
 # https://wiki.ubuntu.com/Fonts
 # https://stackoverflow.com/a/42260979/2449905
 
-FROM debian:buster-slim
+FROM debian:bookworm-slim
 LABEL maintainer="dan@tangledhelix.com"
 
 ### ------------------------------------------------------------------
@@ -58,13 +58,17 @@ RUN chmod 755 /docker-entrypoint.sh \
       python3-pip \
       python3-cairo \
       firefox-esr \
+      pipx \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN pip3 install ebookmaker
+# installs in /root/.local/bin/ which is not on PATH?
+RUN pipx install ebookmaker
 
 RUN cpanm -n Tk::CursorControl \
  && cpanm -n Tk::ToolBar \
+ && cpanm -n File::HomeDir \
+ && cpanm -n Roman \
  && rm -rf /root/.cpanm
 
 RUN curl -s -L -o /bookloupe.tar.gz \
@@ -88,7 +92,7 @@ RUN groupadd pgdp \
 COPY guiguts-base-settings.rc /guiguts-base-settings.rc
 
 # Guiguts release to install (must exist as a GitHub release)
-ENV GUIGUTS_RELEASE_VERSION=1.2.4
+ENV GUIGUTS_RELEASE_VERSION=1.6.3
 
 USER pgdp
 WORKDIR /dp
